@@ -25,3 +25,8 @@ Not in scope yet:
 - cloud STT/TTS
 - Telegram
 - Minerva/OpenAI integration
+
+## Completed refactor steps
+
+- Russian command phrases extracted to `argo/languages/ru.py`.
+- `voice_runtime.py` keeps the existing public `VOSK_PHRASES` alias, so runtime behavior and tests remain unchanged.

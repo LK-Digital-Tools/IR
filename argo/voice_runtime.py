@@ -8,21 +8,11 @@ import sys
 from pathlib import Path
 
 from .config import load_config
+from .languages.ru import COMMAND_PHRASES
 from .music import MusicController, Result
 
-VOSK_PHRASES = {
-    "ир плей": "play",
-    "ир пауза": "pause",
-    "ир следующий": "next",
-    "ир предыдущий": "previous",
-    "ир трек": "status",
-    "ир повтор": "repeat_current",
-    "ир тише": "quieter",
-    "ир громче": "louder",
-    "ир стоп": "stop",
-    "ир музыка": "open_player",
-    "ир удалить": "delete_current",
-}
+VOSK_PHRASES = COMMAND_PHRASES
+
 
 VOSK_GRAMMAR = [
     *VOSK_PHRASES,
