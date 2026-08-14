@@ -9,7 +9,7 @@ from pathlib import Path
 
 from .config import load_config
 from .languages import get_command_phrases
-from .media.linux_mpris import MusicController, Result
+from .media import MediaController, Result, create_media_controller
 
 VOSK_PHRASES = get_command_phrases("ru")
 
@@ -80,7 +80,7 @@ def notify_now_playing(
 
 def dispatch(
     action: str,
-    music: MusicController,
+    music: MediaController,
 ) -> Result:
     if action not in VOSK_PHRASES.values():
         return Result(
@@ -175,7 +175,7 @@ def main() -> None:
         ),
     )
 
-    music = MusicController(
+    music = create_media_controller(
         cfg.get(
             "music",
             {},

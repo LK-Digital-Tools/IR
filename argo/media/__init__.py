@@ -1,8 +1,11 @@
 from __future__ import annotations
 
-from .linux_mpris import MusicController, Result
+from .base import MediaController
+from .factory import create_media_controller
+from .linux_mpris import Result
 
 __all__ = [
-    "MusicController",
+    "MediaController",
     "Result",
+    "create_media_controller",
 ]
