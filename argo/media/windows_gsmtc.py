@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import asyncio
+import shutil
+import subprocess
 
 from .base import Result
 
@@ -173,9 +175,44 @@ class WindowsMediaController:
         )
 
     def open_player(self) -> Result:
+        launch = self.cfg.get(
+            "launch_command",
+            [],
+        )
+
+        if (
+            not isinstance(launch, list)
+            or not launch
+            or not all(isinstance(item, str) and item for item in launch)
+        ):
+            return Result(
+                False,
+                "Windows player launch_command is not configured.",
+            )
+
+        executable = launch[0]
+
+        if shutil.which(executable) is None:
+            return Result(
+                False,
+                f"Windows player executable not found: {executable}",
+            )
+
+        try:
+            subprocess.Popen(
+                launch,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+            )
+        except OSError as exc:
+            return Result(
+                False,
+                f"Windows player launch failed: {exc}",
+            )
+
         return Result(
-            False,
-            "Windows player activation is not implemented yet.",
+            True,
+            "Windows player launched.",
         )
 
     def delete_current(self) -> Result:

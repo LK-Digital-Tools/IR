@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import unittest
+from unittest.mock import patch
 
 from argo.media.windows_gsmtc import WindowsMediaController
 
@@ -137,11 +138,40 @@ class WindowsMediaTests(unittest.TestCase):
             ],
         )
 
-    def test_unimplemented_capabilities_fail_closed(self):
+    def test_open_player_launches_configured_command(self):
+        controller = TestWindowsController(
+            self.session,
+        )
+        controller.cfg = {
+            "launch_command": [
+                "player.exe",
+                "--flag",
+            ]
+        }
+
+        with (
+            patch(
+                "argo.media.windows_gsmtc.shutil.which",
+                return_value="C:/Apps/player.exe",
+            ),
+            patch(
+                "argo.media.windows_gsmtc.subprocess.Popen",
+            ) as popen,
+        ):
+            result = controller.open_player()
+
+        self.assertTrue(result.ok)
+        popen.assert_called_once()
+
+    def test_open_player_rejects_missing_configuration(self):
+        result = self.controller.open_player()
+
+        self.assertFalse(result.ok)
+
+    def test_remaining_unimplemented_capabilities_fail_closed(self):
         for result in (
             self.controller.quieter(),
             self.controller.louder(),
-            self.controller.open_player(),
             self.controller.delete_current(),
         ):
             self.assertFalse(result.ok)
