@@ -3,15 +3,10 @@ from __future__ import annotations
 import shutil
 import subprocess
 import time
-from dataclasses import dataclass
 from pathlib import Path
 from urllib.parse import unquote, urlparse
 
-
-@dataclass(frozen=True, slots=True)
-class Result:
-    ok: bool
-    message: str
+from .base import Result
 
 
 class MusicController:

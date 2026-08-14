@@ -3,7 +3,7 @@ from __future__ import annotations
 import unittest
 from unittest.mock import Mock
 
-from argo.media.linux_mpris import Result
+from argo.media import Result
 from argo.voice_runtime import (
     VOSK_PHRASES,
     command_from_vosk_text,

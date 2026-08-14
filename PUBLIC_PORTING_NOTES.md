@@ -35,3 +35,4 @@ Not in scope yet:
 - Vosk model paths are now configured per language via `voice.models.ru` and `voice.models.en`.
 - Linux Rhythmbox/playerctl implementation moved to `argo/media/linux_mpris.py`; runtime behavior is unchanged.
 - Platform-neutral media interface and backend factory added; Linux selects the MPRIS backend and unsupported platforms fail closed.
+- Media `Result` moved to the platform-neutral backend base so Windows code will not depend on the Linux implementation.

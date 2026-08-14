@@ -1,8 +1,13 @@
 from __future__ import annotations
 
+from dataclasses import dataclass
 from typing import Protocol
 
-from .linux_mpris import Result
+
+@dataclass(frozen=True, slots=True)
+class Result:
+    ok: bool
+    message: str
 
 
 class MediaController(Protocol):

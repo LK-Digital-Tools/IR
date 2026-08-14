@@ -1,8 +1,7 @@
 from __future__ import annotations
 
-from .base import MediaController
+from .base import MediaController, Result
 from .factory import create_media_controller
-from .linux_mpris import Result
 
 __all__ = [
     "MediaController",
