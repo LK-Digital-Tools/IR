@@ -1,0 +1,7 @@
+IR tray icons:
+- Headphone U+1F3A7
+- Muted Speaker U+1F507
+
+Designed by OpenMoji.
+https://openmoji.org/
+License: CC BY-SA 4.0

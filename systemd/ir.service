@@ -1,0 +1,16 @@
+[Unit]
+Description=IR local music voice controller
+After=graphical-session.target pipewire.service wireplumber.service
+
+[Service]
+Type=simple
+WorkingDirectory=%h/Проекты/ARGO/ARGO_MVP_0_1
+ExecStart=%h/Проекты/ARGO/ARGO_MVP_0_1/.venv/bin/argo-voice
+Restart=on-failure
+RestartSec=2
+Environment=PYTHONUNBUFFERED=1
+Environment=DISPLAY=:0
+Environment=XAUTHORITY=%h/.Xauthority
+
+[Install]
+WantedBy=default.target

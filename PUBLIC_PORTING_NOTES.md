@@ -1,0 +1,27 @@
+# IR Public 0.1 — porting notes
+
+Source baseline:
+- Private IR V5
+- Linux/Dandi
+- 11 Russian voice commands
+- 25 tests PASS
+
+Public goals:
+- Keep private V5 unchanged.
+- Add Russian + English language packs.
+- Separate core commands from platform-specific media control.
+- Keep Linux support.
+- Add Windows media backend.
+- Remove personal absolute paths from code and templates.
+- Keep offline speech recognition.
+- Keep cloud/API dependencies out of the core.
+- Add portable install documentation.
+- Publish only after clean-install tests on Linux and Windows.
+
+Not in scope yet:
+- GitHub remote
+- release packaging
+- installer EXE
+- cloud STT/TTS
+- Telegram
+- Minerva/OpenAI integration

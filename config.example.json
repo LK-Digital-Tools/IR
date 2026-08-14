@@ -1,0 +1,11 @@
+{
+  "voice": {
+    "sample_rate": 16000,
+    "vosk_model": "~/.local/share/argo/vosk/vosk-model-small-ru-0.22"
+  },
+  "music": {
+    "player_name": "rhythmbox",
+    "launch_command": ["rhythmbox"],
+    "library_root": "~/Музыка"
+  }
+}
