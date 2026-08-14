@@ -16,6 +16,7 @@ dependencies = [
 dev = ["ruff"]
 windows = [
     "winrt-Windows.Media.Control==3.2.1; platform_system == 'Windows'",
+    "pycaw==20251023; platform_system == 'Windows'",
 ]
 
 [project.scripts]

@@ -6,7 +6,7 @@ from pathlib import Path
 
 
 class PackagingTests(unittest.TestCase):
-    def test_windows_extra_declares_media_control_projection(self):
+    def test_windows_extra_declares_media_dependencies(self):
         data = tomllib.loads(
             Path("pyproject.toml").read_text(
                 encoding="utf-8",
@@ -17,5 +17,8 @@ class PackagingTests(unittest.TestCase):
 
         self.assertEqual(
             windows,
-            ["winrt-Windows.Media.Control==3.2.1; platform_system == 'Windows'"],
+            [
+                "winrt-Windows.Media.Control==3.2.1; platform_system == 'Windows'",
+                "pycaw==20251023; platform_system == 'Windows'",
+            ],
         )

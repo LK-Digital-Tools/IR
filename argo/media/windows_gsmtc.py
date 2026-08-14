@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import asyncio
+import ntpath
 import shutil
 import subprocess
 
@@ -162,16 +163,92 @@ class WindowsMediaController:
     def repeat_current(self) -> Result:
         return self._run(self._repeat_current())
 
-    def quieter(self) -> Result:
+    def _target_process_name(self) -> str:
+        configured = self.cfg.get(
+            "process_name",
+            "",
+        )
+
+        if isinstance(configured, str) and configured.strip():
+            return configured.strip()
+
+        launch = self.cfg.get(
+            "launch_command",
+            [],
+        )
+
+        if isinstance(launch, list) and launch and isinstance(launch[0], str) and launch[0]:
+            return ntpath.basename(
+                launch[0],
+            )
+
+        return ""
+
+    def _get_simple_audio_volume(self):
+        try:
+            from pycaw.pycaw import AudioUtilities
+        except ImportError as exc:
+            raise RuntimeError(
+                "Windows volume support is missing. Install IR with the 'windows' extra.",
+            ) from exc
+
+        target = self._target_process_name()
+
+        if not target:
+            raise RuntimeError(
+                "Windows music.process_name or launch_command is required for per-session volume.",
+            )
+
+        for session in AudioUtilities.GetAllSessions():
+            process = session.Process
+
+            if process is None:
+                continue
+
+            if process.name().casefold() == target.casefold():
+                return session.SimpleAudioVolume
+
+        raise RuntimeError(
+            f"Windows audio session not found: {target}",
+        )
+
+    def _change_volume(
+        self,
+        delta: float,
+    ) -> Result:
+        try:
+            volume = self._get_simple_audio_volume()
+            current = float(volume.GetMasterVolume())
+            target = min(
+                1.0,
+                max(
+                    0.0,
+                    current + delta,
+                ),
+            )
+            volume.SetMasterVolume(
+                target,
+                None,
+            )
+        except Exception as exc:
+            return Result(
+                False,
+                f"Windows volume error: {exc}",
+            )
+
         return Result(
-            False,
-            "Windows per-session volume is not implemented yet.",
+            True,
+            f"Windows volume: {round(target * 100)}%",
+        )
+
+    def quieter(self) -> Result:
+        return self._change_volume(
+            -0.05,
         )
 
     def louder(self) -> Result:
-        return Result(
-            False,
-            "Windows per-session volume is not implemented yet.",
+        return self._change_volume(
+            0.05,
         )
 
     def open_player(self) -> Result:

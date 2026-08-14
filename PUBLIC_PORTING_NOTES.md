@@ -39,3 +39,4 @@ Not in scope yet:
 - Initial Windows GSMTC backend added for play/pause/next/previous/status/repeat/stop; volume, player activation, and file deletion remain fail-closed until implemented and tested on Windows.
 - Windows PyWinRT dependency is isolated behind the `windows` extra and pinned to `winrt-Windows.Media.Control==3.2.1`.
 - Windows `open_player` now launches a configured argv-style `music.launch_command` via `subprocess.Popen`; volume and current-file deletion remain fail-closed.
+- Windows quieter/louder now use the target application's Core Audio session through `pycaw`, with 5% steps and 0-100% clamping; `music.process_name` can override executable-name detection.
