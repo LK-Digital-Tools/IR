@@ -1,29 +1,18 @@
-# IR — local voice music controller
+# IR Public 0.1
 
-IR is a private, fully local voice controller for music on Dandi.
+IR is a local, offline voice controller for desktop music playback.
 
-Current stable baseline: V5.
+Current target platforms:
 
-## Runtime
-
-- Python 3.11+
-- Vosk offline speech recognition
-- sounddevice microphone input
-- Rhythmbox
-- playerctl / MPRIS
-- wmctrl for presenting the Rhythmbox window
-- systemd user service
-- Cinnamon tray indicator
-
-No cloud STT.
-No TTS.
-No OpenAI API.
-No Telegram.
-No arbitrary shell execution.
+- Linux: full 11-command surface through MPRIS/playerctl
+- Windows: 10-command surface through GSMTC + Core Audio
+- Languages: Russian and English
+- Speech recognition: local Vosk
+- Cloud services: none
 
 ## Voice commands
 
-Exact Russian voice surface:
+Russian:
 
 - `Ир, плей`
 - `Ир, пауза`
@@ -35,65 +24,151 @@ Exact Russian voice surface:
 - `Ир, громче`
 - `Ир, стоп`
 - `Ир, музыка`
-- `Ир, удалить`
+- `Ир, удалить` — Linux only
 
-`Ир, стоп` is intentionally implemented as a resumable pause.
+English:
 
-`Ир, удалить` only deletes the current local file when it is
-inside the configured music library root.
+- `ir play`
+- `ir pause`
+- `ir next`
+- `ir previous`
+- `ir track`
+- `ir repeat`
+- `ir quieter`
+- `ir louder`
+- `ir stop`
+- `ir music`
+- `ir delete` — Linux only
 
-## Tests
+Commands are exact and require the wake word.
 
-```bash
-.venv/bin/python -m unittest discover -v
-```
+## Platform capability matrix
 
-Current baseline: 25 tests, PASS.
+| Action | Linux | Windows |
+|---|---:|---:|
+| play | yes | yes |
+| pause | yes | yes |
+| next | yes | yes |
+| previous | yes | yes |
+| track/status | yes | yes |
+| repeat current | yes | yes |
+| quieter | yes | yes |
+| louder | yes | yes |
+| stop as resumable pause | yes | yes |
+| open player | yes | yes |
+| delete current local file | yes | no |
 
-## Configuration
+Windows deliberately omits `delete_current` until a safe cross-player local-file contract exists.
 
-Runtime configuration:
+## Linux
+
+Requirements include:
+
+- Python
+- Vosk model
+- `playerctl`
+- `wmctrl`
+- a compatible MPRIS player
+
+Example config:
+
+`config.linux.example.json`
+
+Default config path:
 
 `~/.config/argo/config.json`
 
-Example:
+Install:
+
+```bash
+./install_dandi.sh
+```
+
+## Windows
+
+Requirements include:
+
+- Python available on `PATH`
+- Vosk model
+- a GSMTC-compatible media player
+
+Example config:
+
+`config.windows.example.json`
+
+Default config path:
+
+`%APPDATA%\IR\config.json`
+
+Install from PowerShell:
+
+```powershell
+.\windows\install_windows.ps1
+```
+
+Static + host readiness verification:
+
+```powershell
+.\windows\verify_windows.ps1
+```
+
+Remove only the IR autostart task:
+
+```powershell
+.\windows\uninstall_windows_autostart.ps1
+```
+
+The Windows installer creates a project-local virtual environment, installs the `windows` extra, creates a config if needed, and registers a per-user logon task using `pythonw.exe`.
+
+## Config override
+
+Set `IR_CONFIG` to use a non-default config file.
+
+## Vosk models
+
+The config contains separate model paths for `ru` and `en`.
+
+Linux example:
 
 ```json
 {
   "voice": {
-    "sample_rate": 16000,
-    "vosk_model": "~/.local/share/argo/vosk/vosk-model-small-ru-0.22"
-  },
-  "music": {
-    "player_name": "rhythmbox",
-    "launch_command": ["rhythmbox"],
-    "library_root": "~/Музыка"
+    "language": "ru",
+    "models": {
+      "ru": "~/.local/share/ir/vosk/vosk-model-small-ru-0.22",
+      "en": "~/.local/share/ir/vosk/vosk-model-small-en-us-0.15"
+    }
   }
 }
 ```
 
-## Service
+Windows paths may use environment variables such as `%LOCALAPPDATA%`.
 
-User service:
+## Safety behavior
 
-`~/.config/systemd/user/ir.service`
+IR intentionally fails closed when a platform capability is unavailable.
 
-Useful commands:
+Linux file deletion accepts only an existing local regular file inside the configured music library root and rejects remote URLs, symlinks, missing files, and paths outside the library.
+
+Windows file deletion is not exposed in the voice grammar.
+
+## Tests
+
+Run:
 
 ```bash
-systemctl --user status ir.service
-systemctl --user restart ir.service
-journalctl --user -u ir.service -n 50 --no-pager
+python -m unittest discover -v
 ```
 
-## Scope
+Lint and formatting:
 
-This directory is the private Linux/Dandi implementation.
+```bash
+python -m ruff check argo tests tools
+python -m ruff format --check argo tests tools
+```
 
-The stable V5 implementation remains the private baseline while a future
-public branch is developed separately for:
+## Status
 
-- Russian + English voice commands
-- Linux + Windows
-- portable configuration
-- public GitHub release
+Linux behavior is derived from the stable private IR V5 baseline.
+
+Windows implementation is structurally complete for the current 10-command surface, but live validation on a Windows host is still required before the first public release.
