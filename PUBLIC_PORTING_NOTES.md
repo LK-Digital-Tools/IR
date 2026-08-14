@@ -44,3 +44,4 @@ Not in scope yet:
 - Runtime grammar is now filtered by platform capabilities: Linux exposes all 11 actions; Windows currently exposes 10 and omits `delete_current` until a safe implementation exists.
 - Added separate Linux and Windows config examples; config values now expand environment variables as well as `~`, allowing Windows paths such as `%LOCALAPPDATA%/IR/...` to be configured without hard-coding a username.
 - Added Windows PowerShell installer and reversible per-user logon autostart. The scheduled task launches IR through the project venv's `pythonw.exe`, so no persistent console window is required.
+- Added `windows/verify_windows.ps1` for first-host validation: full unit suite, WinRT, pycaw, Vosk/sounddevice imports, config load, Windows action surface, and visible audio devices.
