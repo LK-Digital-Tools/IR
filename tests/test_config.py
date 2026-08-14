@@ -36,6 +36,29 @@ class ConfigTests(unittest.TestCase):
         self.assertFalse(config["voice"]["models"]["ru"].startswith("~"))
         self.assertFalse(config["music"]["library_root"].startswith("~"))
 
+    def test_load_config_expands_environment_variables(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            path = Path(temp_dir) / "config.json"
+            path.write_text(
+                json.dumps(
+                    {
+                        "voice": {
+                            "models": {
+                                "en": "$HOME/models/en",
+                            }
+                        }
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            config = load_config(path)
+
+        self.assertNotIn(
+            "$HOME",
+            config["voice"]["models"]["en"],
+        )
+
     def test_non_object_config_is_rejected(self):
         with tempfile.TemporaryDirectory() as temp_dir:
             path = Path(temp_dir) / "config.json"

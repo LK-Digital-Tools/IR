@@ -1,0 +1,16 @@
+{
+  "voice": {
+    "language": "ru",
+    "models": {
+      "ru": "~/.local/share/ir/vosk/vosk-model-small-ru-0.22",
+      "en": "~/.local/share/ir/vosk/vosk-model-small-en-us-0.15"
+    }
+  },
+  "music": {
+    "player_name": "rhythmbox",
+    "launch_command": [
+      "rhythmbox"
+    ],
+    "library_root": "~/Музыка"
+  }
+}

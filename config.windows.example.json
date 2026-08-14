@@ -1,0 +1,15 @@
+{
+  "voice": {
+    "language": "en",
+    "models": {
+      "ru": "%LOCALAPPDATA%\\IR\\vosk\\vosk-model-small-ru-0.22",
+      "en": "%LOCALAPPDATA%\\IR\\vosk\\vosk-model-small-en-us-0.15"
+    }
+  },
+  "music": {
+    "launch_command": [
+      "C:\\Program Files\\VideoLAN\\VLC\\vlc.exe"
+    ],
+    "process_name": "vlc.exe"
+  }
+}

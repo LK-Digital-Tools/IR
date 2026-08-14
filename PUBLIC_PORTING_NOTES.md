@@ -42,3 +42,4 @@ Not in scope yet:
 - Windows quieter/louder now use the target application's Core Audio session through `pycaw`, with 5% steps and 0-100% clamping; `music.process_name` can override executable-name detection.
 - Config discovery is now platform-aware: Linux keeps `~/.config/argo/config.json`, Windows uses `%APPDATA%/IR/config.json`, and `IR_CONFIG` overrides both.
 - Runtime grammar is now filtered by platform capabilities: Linux exposes all 11 actions; Windows currently exposes 10 and omits `delete_current` until a safe implementation exists.
+- Added separate Linux and Windows config examples; config values now expand environment variables as well as `~`, allowing Windows paths such as `%LOCALAPPDATA%/IR/...` to be configured without hard-coding a username.

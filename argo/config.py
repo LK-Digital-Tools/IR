@@ -8,8 +8,9 @@ from pathlib import Path
 
 
 def _expand(value):
-    if isinstance(value, str) and value.startswith("~"):
-        return str(Path(value).expanduser())
+    if isinstance(value, str):
+        expanded = Path(value).expanduser() if value.startswith("~") else value
+        return os.path.expandvars(str(expanded))
 
     if isinstance(value, list):
         return [_expand(item) for item in value]

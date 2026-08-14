@@ -1,15 +1,3 @@
 {
-  "voice": {
-    "language": "ru",
-    "sample_rate": 16000,
-    "models": {
-      "ru": "~/.local/share/ir/vosk/vosk-model-small-ru-0.22",
-      "en": "~/.local/share/ir/vosk/vosk-model-small-en-us-0.15"
-    }
-  },
-  "music": {
-    "player_name": "rhythmbox",
-    "launch_command": ["rhythmbox"],
-    "library_root": "~/Музыка"
-  }
+  "_note": "Use config.linux.example.json on Linux or config.windows.example.json on Windows."
 }
