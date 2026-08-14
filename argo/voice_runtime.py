@@ -9,7 +9,12 @@ from pathlib import Path
 
 from .config import load_config
 from .languages import get_command_phrases
-from .media import MediaController, Result, create_media_controller
+from .media import (
+    MediaController,
+    Result,
+    create_media_controller,
+    get_supported_actions,
+)
 
 VOSK_PHRASES = get_command_phrases("ru")
 
@@ -107,13 +112,18 @@ def main() -> None:
     ).casefold()
 
     try:
-        command_phrases = get_command_phrases(language)
-    except ValueError as exc:
+        language_phrases = get_command_phrases(language)
+        supported_actions = get_supported_actions()
+    except (RuntimeError, ValueError) as exc:
         print(
             str(exc),
             file=sys.stderr,
         )
         raise SystemExit(2) from exc
+
+    command_phrases = {
+        phrase: action for phrase, action in language_phrases.items() if action in supported_actions
+    }
 
     try:
         import sounddevice as sd

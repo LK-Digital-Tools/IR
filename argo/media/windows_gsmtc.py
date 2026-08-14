@@ -7,6 +7,21 @@ import subprocess
 
 from .base import Result
 
+SUPPORTED_ACTIONS = frozenset(
+    {
+        "play",
+        "pause",
+        "next",
+        "previous",
+        "status",
+        "repeat_current",
+        "quieter",
+        "louder",
+        "stop",
+        "open_player",
+    }
+)
+
 
 class WindowsMediaController:
     def __init__(

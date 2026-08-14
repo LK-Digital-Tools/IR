@@ -221,3 +221,25 @@ class VoiceModelConfigTests(unittest.TestCase):
                 },
                 "ru",
             )
+
+
+class PlatformCommandSurfaceTests(unittest.TestCase):
+    def test_windows_language_surface_can_exclude_delete(self):
+        from argo.languages.en import COMMAND_PHRASES as EN_COMMAND_PHRASES
+        from argo.media import get_supported_actions
+
+        supported = get_supported_actions(
+            platform="win32",
+        )
+        phrases = {
+            phrase: action for phrase, action in EN_COMMAND_PHRASES.items() if action in supported
+        }
+
+        self.assertEqual(
+            len(phrases),
+            10,
+        )
+        self.assertNotIn(
+            "ir delete",
+            phrases,
+        )

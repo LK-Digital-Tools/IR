@@ -8,6 +8,22 @@ from urllib.parse import unquote, urlparse
 
 from .base import Result
 
+SUPPORTED_ACTIONS = frozenset(
+    {
+        "play",
+        "pause",
+        "next",
+        "previous",
+        "status",
+        "repeat_current",
+        "quieter",
+        "louder",
+        "stop",
+        "open_player",
+        "delete_current",
+    }
+)
+
 
 class MusicController:
     def __init__(self, cfg: dict):
