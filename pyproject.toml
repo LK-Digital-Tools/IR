@@ -14,6 +14,9 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = ["ruff"]
+windows = [
+    "winrt-Windows.Media.Control==3.2.1; platform_system == 'Windows'",
+]
 
 [project.scripts]
 argo-voice = "argo.voice_runtime:main"

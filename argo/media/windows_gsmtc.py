@@ -19,7 +19,7 @@ class WindowsMediaController:
             )
         except ImportError as exc:
             raise RuntimeError(
-                "Windows media support requires PyWinRT Windows.Media.Control",
+                "Windows media support is missing. Install IR with the 'windows' extra.",
             ) from exc
 
         manager = await GlobalSystemMediaTransportControlsSessionManager.request_async()
