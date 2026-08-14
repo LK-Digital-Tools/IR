@@ -31,3 +31,4 @@ Not in scope yet:
 - Russian command phrases extracted to `argo/languages/ru.py`.
 - `voice_runtime.py` keeps the existing public `VOSK_PHRASES` alias, so runtime behavior and tests remain unchanged.
 - English command phrases added in `argo/languages/en.py`; runtime selection is intentionally not wired yet.
+- Runtime language selection added via `voice.language` (`ru` or `en`); the configured Vosk model must match the selected language.

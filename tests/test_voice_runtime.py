@@ -60,6 +60,19 @@ class VoiceRuntimeTests(unittest.TestCase):
             "play",
         )
 
+    def test_english_phrases_can_be_selected(
+        self,
+    ):
+        from argo.languages.en import COMMAND_PHRASES as EN_COMMAND_PHRASES
+
+        self.assertEqual(
+            command_from_vosk_text(
+                "  IR   PLAY  ",
+                EN_COMMAND_PHRASES,
+            ),
+            "play",
+        )
+
     def test_commands_without_wake_word_are_rejected(
         self,
     ):

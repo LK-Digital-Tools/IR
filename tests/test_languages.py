@@ -21,3 +21,27 @@ class LanguagePackTests(unittest.TestCase):
         self.assertEqual(EN_COMMAND_PHRASES["ir play"], "play")
         self.assertEqual(EN_COMMAND_PHRASES["ir music"], "open_player")
         self.assertEqual(EN_COMMAND_PHRASES["ir delete"], "delete_current")
+
+
+class LanguageSelectionTests(unittest.TestCase):
+    def test_language_loader_returns_russian_pack(self):
+        from argo.languages import get_command_phrases
+
+        self.assertIs(
+            get_command_phrases("ru"),
+            RU_COMMAND_PHRASES,
+        )
+
+    def test_language_loader_returns_english_pack(self):
+        from argo.languages import get_command_phrases
+
+        self.assertIs(
+            get_command_phrases("EN"),
+            EN_COMMAND_PHRASES,
+        )
+
+    def test_language_loader_rejects_unknown_language(self):
+        from argo.languages import get_command_phrases
+
+        with self.assertRaises(ValueError):
+            get_command_phrases("de")

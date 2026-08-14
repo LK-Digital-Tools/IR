@@ -8,10 +8,10 @@ import sys
 from pathlib import Path
 
 from .config import load_config
-from .languages.ru import COMMAND_PHRASES
+from .languages import get_command_phrases
 from .music import MusicController, Result
 
-VOSK_PHRASES = COMMAND_PHRASES
+VOSK_PHRASES = get_command_phrases("ru")
 
 
 VOSK_GRAMMAR = [
@@ -22,10 +22,12 @@ VOSK_GRAMMAR = [
 
 def command_from_vosk_text(
     text: str,
+    phrases: dict[str, str] | None = None,
 ) -> str | None:
     normalized = " ".join(text.strip().casefold().split())
+    active_phrases = VOSK_PHRASES if phrases is None else phrases
 
-    return VOSK_PHRASES.get(normalized)
+    return active_phrases.get(normalized)
 
 
 def notify_now_playing(
@@ -75,6 +77,22 @@ def main() -> None:
         {},
     )
 
+    language = str(
+        voice_cfg.get(
+            "language",
+            "ru",
+        )
+    ).casefold()
+
+    try:
+        command_phrases = get_command_phrases(language)
+    except ValueError as exc:
+        print(
+            str(exc),
+            file=sys.stderr,
+        )
+        raise SystemExit(2) from exc
+
     try:
         import sounddevice as sd
         from vosk import (
@@ -122,7 +140,10 @@ def main() -> None:
         model,
         sample_rate,
         json.dumps(
-            VOSK_GRAMMAR,
+            [
+                *command_phrases,
+                "[unk]",
+            ],
             ensure_ascii=False,
         ),
     )
@@ -175,7 +196,10 @@ def main() -> None:
 
                 print(f"HEARD: {text}")
 
-                action = command_from_vosk_text(text)
+                action = command_from_vosk_text(
+                    text,
+                    command_phrases,
+                )
 
                 if action is None:
                     continue
