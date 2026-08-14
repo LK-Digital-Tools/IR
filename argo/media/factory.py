@@ -16,6 +16,11 @@ def create_media_controller(
     if target.startswith("linux"):
         return MusicController(cfg)
 
+    if target == "win32":
+        from .windows_gsmtc import WindowsMediaController
+
+        return WindowsMediaController(cfg)
+
     raise RuntimeError(
         f"Unsupported IR media platform: {target}",
     )

@@ -36,3 +36,4 @@ Not in scope yet:
 - Linux Rhythmbox/playerctl implementation moved to `argo/media/linux_mpris.py`; runtime behavior is unchanged.
 - Platform-neutral media interface and backend factory added; Linux selects the MPRIS backend and unsupported platforms fail closed.
 - Media `Result` moved to the platform-neutral backend base so Windows code will not depend on the Linux implementation.
+- Initial Windows GSMTC backend added for play/pause/next/previous/status/repeat/stop; volume, player activation, and file deletion remain fail-closed until implemented and tested on Windows.

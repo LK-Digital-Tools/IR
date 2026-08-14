@@ -32,6 +32,19 @@ class MediaFactoryTests(unittest.TestCase):
             MusicController,
         )
 
+    def test_windows_platform_selects_gsmtc_backend(self):
+        from argo.media.windows_gsmtc import WindowsMediaController
+
+        controller = create_media_controller(
+            {},
+            platform="win32",
+        )
+
+        self.assertIsInstance(
+            controller,
+            WindowsMediaController,
+        )
+
     def test_unsupported_platform_fails_closed(self):
         with self.assertRaisesRegex(
             RuntimeError,
@@ -39,5 +52,5 @@ class MediaFactoryTests(unittest.TestCase):
         ):
             create_media_controller(
                 {},
-                platform="win32",
+                platform="darwin",
             )
