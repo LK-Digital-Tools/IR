@@ -33,3 +33,4 @@ Not in scope yet:
 - English command phrases added in `argo/languages/en.py`; runtime selection is intentionally not wired yet.
 - Runtime language selection added via `voice.language` (`ru` or `en`); the configured Vosk model must match the selected language.
 - Vosk model paths are now configured per language via `voice.models.ru` and `voice.models.en`.
+- Linux Rhythmbox/playerctl implementation moved to `argo/media/linux_mpris.py`; runtime behavior is unchanged.

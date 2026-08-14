@@ -5,7 +5,7 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from argo.music import (
+from argo.media.linux_mpris import (
     MusicController,
     Result,
 )
@@ -63,7 +63,7 @@ class MusicControllerTests(unittest.TestCase):
                     "готово",
                 ),
             ) as playerctl,
-            patch("argo.music.time.sleep"),
+            patch("argo.media.linux_mpris.time.sleep"),
         ):
             result = self.music.previous()
 
@@ -94,7 +94,7 @@ class MusicControllerTests(unittest.TestCase):
                     "готово",
                 ),
             ) as playerctl,
-            patch("argo.music.time.sleep"),
+            patch("argo.media.linux_mpris.time.sleep"),
         ):
             result = self.music.previous()
 
@@ -150,7 +150,7 @@ class MusicColdStartTests(unittest.TestCase):
                     Result(True, "готово"),
                 ],
             ) as playerctl,
-            patch("argo.music.time.sleep") as sleep,
+            patch("argo.media.linux_mpris.time.sleep") as sleep,
         ):
             result = music.play()
 
@@ -372,11 +372,11 @@ class MusicOpenPlayerTests(unittest.TestCase):
 
         with (
             patch(
-                "argo.music.shutil.which",
+                "argo.media.linux_mpris.shutil.which",
                 return_value="/usr/bin/wmctrl",
             ),
             patch(
-                "argo.music.subprocess.run",
+                "argo.media.linux_mpris.subprocess.run",
                 return_value=process,
             ) as run,
         ):

@@ -9,7 +9,7 @@ from pathlib import Path
 
 from .config import load_config
 from .languages import get_command_phrases
-from .music import MusicController, Result
+from .media.linux_mpris import MusicController, Result
 
 VOSK_PHRASES = get_command_phrases("ru")
 
