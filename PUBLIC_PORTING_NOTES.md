@@ -40,3 +40,4 @@ Not in scope yet:
 - Windows PyWinRT dependency is isolated behind the `windows` extra and pinned to `winrt-Windows.Media.Control==3.2.1`.
 - Windows `open_player` now launches a configured argv-style `music.launch_command` via `subprocess.Popen`; volume and current-file deletion remain fail-closed.
 - Windows quieter/louder now use the target application's Core Audio session through `pycaw`, with 5% steps and 0-100% clamping; `music.process_name` can override executable-name detection.
+- Config discovery is now platform-aware: Linux keeps `~/.config/argo/config.json`, Windows uses `%APPDATA%/IR/config.json`, and `IR_CONFIG` overrides both.
