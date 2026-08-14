@@ -2,13 +2,14 @@
   "voice": {
     "language": "ru",
     "sample_rate": 16000,
-    "vosk_model": "~/.local/share/argo/vosk/vosk-model-small-ru-0.22"
+    "models": {
+      "ru": "~/.local/share/ir/vosk/vosk-model-small-ru-0.22",
+      "en": "~/.local/share/ir/vosk/vosk-model-small-en-us-0.15"
+    }
   },
   "music": {
     "player_name": "rhythmbox",
-    "launch_command": [
-      "rhythmbox"
-    ],
+    "launch_command": ["rhythmbox"],
     "library_root": "~/Музыка"
   }
 }

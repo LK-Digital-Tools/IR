@@ -20,6 +20,28 @@ VOSK_GRAMMAR = [
 ]
 
 
+def get_vosk_model_path(
+    voice_cfg: dict,
+    language: str,
+) -> Path:
+    models = voice_cfg.get(
+        "models",
+        {},
+    )
+
+    if not isinstance(models, dict):
+        raise ValueError("voice.models must be an object")
+
+    model = models.get(language)
+
+    if not isinstance(model, str) or not model.strip():
+        raise ValueError(
+            f"No Vosk model configured for language: {language}",
+        )
+
+    return Path(model).expanduser()
+
+
 def command_from_vosk_text(
     text: str,
     phrases: dict[str, str] | None = None,
@@ -115,12 +137,17 @@ def main() -> None:
         )
     )
 
-    model_path = Path(
-        voice_cfg.get(
-            "vosk_model",
-            "~/.local/share/argo/vosk/vosk-model-small-ru-0.22",
+    try:
+        model_path = get_vosk_model_path(
+            voice_cfg,
+            language,
         )
-    ).expanduser()
+    except ValueError as exc:
+        print(
+            str(exc),
+            file=sys.stderr,
+        )
+        raise SystemExit(2) from exc
 
     if not model_path.is_dir():
         print(

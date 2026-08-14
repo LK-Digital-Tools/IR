@@ -8,6 +8,7 @@ from argo.voice_runtime import (
     VOSK_PHRASES,
     command_from_vosk_text,
     dispatch,
+    get_vosk_model_path,
 )
 
 
@@ -168,3 +169,55 @@ class VoiceRuntimeTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class VoiceModelConfigTests(unittest.TestCase):
+    def test_selects_russian_model(self):
+        path = get_vosk_model_path(
+            {
+                "models": {
+                    "ru": "~/models/ru",
+                    "en": "~/models/en",
+                }
+            },
+            "ru",
+        )
+
+        self.assertTrue(
+            str(path).endswith("/models/ru"),
+        )
+
+    def test_selects_english_model(self):
+        path = get_vosk_model_path(
+            {
+                "models": {
+                    "ru": "~/models/ru",
+                    "en": "~/models/en",
+                }
+            },
+            "en",
+        )
+
+        self.assertTrue(
+            str(path).endswith("/models/en"),
+        )
+
+    def test_rejects_missing_language_model(self):
+        with self.assertRaises(ValueError):
+            get_vosk_model_path(
+                {
+                    "models": {
+                        "ru": "~/models/ru",
+                    }
+                },
+                "en",
+            )
+
+    def test_rejects_non_object_models(self):
+        with self.assertRaises(ValueError):
+            get_vosk_model_path(
+                {
+                    "models": ["bad"],
+                },
+                "ru",
+            )
