@@ -8,6 +8,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 
 REQUIRED_FILES = (
+    "LICENSE",
     "README.md",
     "PUBLIC_PORTING_NOTES.md",
     "WINDOWS_LIVE_VALIDATION_2026-08-19.md",
@@ -42,6 +43,16 @@ def main() -> int:
 
     if missing:
         fail("missing files: " + ", ".join(missing))
+
+    license_text = (ROOT / "LICENSE").read_text(
+        encoding="utf-8",
+    )
+
+    if "MIT License" not in license_text:
+        fail("LICENSE is not MIT")
+
+    if "Copyright (c) 2026 LK Digital Tools" not in license_text:
+        fail("unexpected copyright holder")
 
     data = tomllib.loads(
         (ROOT / "pyproject.toml").read_text(
@@ -82,6 +93,7 @@ def main() -> int:
     print(f"VERSION: {version}")
     print("BRANCH: main")
     print("REQUIRED FILES: PASS")
+    print("LICENSE: MIT / LK Digital Tools")
     print("WORKTREE: CLEAN")
     return 0
 

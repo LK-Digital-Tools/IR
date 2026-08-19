@@ -60,3 +60,17 @@ class ReleaseCheckTests(unittest.TestCase):
             "worktree is not clean",
             self.text,
         )
+
+    def test_gate_requires_mit_license_for_lk_digital_tools(self):
+        self.assertIn(
+            '"LICENSE"',
+            self.text,
+        )
+        self.assertIn(
+            "Copyright (c) 2026 LK Digital Tools",
+            self.text,
+        )
+        self.assertIn(
+            "MIT License",
+            self.text,
+        )
