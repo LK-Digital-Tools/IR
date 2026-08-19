@@ -65,3 +65,43 @@ class WindowsVerifierTests(unittest.TestCase):
             "sd.query_devices()",
             self.script,
         )
+
+    def test_verifier_contains_foundation_import(
+        self,
+    ):
+        self.assertIn(
+            "winrt.windows.foundation",
+            self.script,
+        )
+
+    def test_verifier_contains_foundationcollections_import(
+        self,
+    ):
+        self.assertIn(
+            "winrt.windows.foundation.collections",
+            self.script,
+        )
+
+    def test_verifier_contains_gsmtc_manager_request(
+        self,
+    ):
+        self.assertIn(
+            "request_async()",
+            self.script,
+        )
+
+    def test_verifier_contains_gsmtc_session_reporting(
+        self,
+    ):
+        self.assertIn(
+            "GSMTC SESSIONS:",
+            self.script,
+        )
+
+    def test_verifier_contains_fallback_note(
+        self,
+    ):
+        self.assertIn(
+            "WM_APPCOMMAND fallback",
+            self.script,
+        )

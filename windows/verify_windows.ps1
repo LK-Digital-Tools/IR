@@ -8,14 +8,38 @@ if (-not (Test-Path $Python)) {
     throw "IR venv not found. Run windows\install_windows.ps1 first."
 }
 
+Push-Location $Project
+
 & $Python -m unittest discover -v
 if ($LASTEXITCODE -ne 0) {
     throw "Unit tests failed."
 }
 
-& $Python -c "from winrt.windows.media.control import GlobalSystemMediaTransportControlsSessionManager; print('WINRT IMPORT: PASS')"
+@'
+import asyncio
+
+import winrt.windows.foundation
+import winrt.windows.foundation.collections
+
+from winrt.windows.media.control import (
+    GlobalSystemMediaTransportControlsSessionManager,
+)
+
+
+async def main():
+    manager = await GlobalSystemMediaTransportControlsSessionManager.request_async()
+    sessions = list(manager.get_sessions())
+
+    print("PYWINRT DEPENDENCIES: PASS")
+    print("GSMTC MANAGER: PASS")
+    print("GSMTC SESSIONS:", len(sessions))
+
+
+asyncio.run(main())
+'@ | & $Python -
+
 if ($LASTEXITCODE -ne 0) {
-    throw "WinRT media import failed."
+    throw "WinRT media runtime verification failed."
 }
 
 & $Python -c "from pycaw.pycaw import AudioUtilities; print('PYCAW IMPORT: PASS')"
@@ -50,4 +74,7 @@ if ($LASTEXITCODE -ne 0) {
 }
 
 Write-Host "WINDOWS READINESS VERIFIER: PASS"
-Write-Host "NEXT: live microphone + media-control test"
+Write-Host "TRANSPORT: GSMTC -> targeted WM_APPCOMMAND fallback"
+Write-Host "NOTE: status/repeat require an active GSMTC session"
+
+Pop-Location

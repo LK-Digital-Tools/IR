@@ -47,3 +47,4 @@ Not in scope yet:
 - Added `windows/verify_windows.ps1` for first-host validation: full unit suite, WinRT, pycaw, Vosk/sounddevice imports, config load, Windows action surface, and visible audio devices.
 - Windows live-host portability repairs: path assertions are separator-neutral, Linux file-deletion tests are Linux-only, and the Windows extra now includes the PyWinRT Foundation projections required by GSMTC at runtime.
 - Windows live validation on 2026-08-19 confirmed no GSMTC session for VLC or Windows Media Player Legacy on the test host. Transport commands now prefer GSMTC and fall back to targeted `WM_APPCOMMAND` for play/pause/next/previous/stop; live pause/play and next/previous were manually confirmed.
+- Windows verifier now exercises the real PyWinRT Foundation projections and requests the GSMTC session manager; docs explicitly state that status/repeat remain GSMTC-dependent while transport commands have the WM_APPCOMMAND fallback.
