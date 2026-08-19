@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import sys
 import tempfile
 import unittest
 from pathlib import Path
@@ -180,6 +181,10 @@ class MusicColdStartTests(unittest.TestCase):
         playerctl.assert_called_once_with("play")
 
 
+@unittest.skipUnless(
+    sys.platform.startswith("linux"),
+    "Linux file deletion semantics",
+)
 class MusicDeleteTests(unittest.TestCase):
     def make_music(self, root: Path) -> MusicController:
         return MusicController(

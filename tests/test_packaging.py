@@ -19,6 +19,8 @@ class PackagingTests(unittest.TestCase):
             windows,
             [
                 "winrt-Windows.Media.Control==3.2.1; platform_system == 'Windows'",
+                "winrt-Windows.Foundation==3.2.1; platform_system == 'Windows'",
+                "winrt-Windows.Foundation.Collections==3.2.1; platform_system == 'Windows'",
                 "pycaw==20251023; platform_system == 'Windows'",
             ],
         )

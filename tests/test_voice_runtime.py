@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import unittest
+from pathlib import Path
 from unittest.mock import Mock
 
 from argo.media import Result
@@ -184,7 +185,7 @@ class VoiceModelConfigTests(unittest.TestCase):
         )
 
         self.assertTrue(
-            str(path).endswith("/models/ru"),
+            str(path).endswith(str(Path("models") / "ru")),
         )
 
     def test_selects_english_model(self):
@@ -199,7 +200,7 @@ class VoiceModelConfigTests(unittest.TestCase):
         )
 
         self.assertTrue(
-            str(path).endswith("/models/en"),
+            str(path).endswith(str(Path("models") / "en")),
         )
 
     def test_rejects_missing_language_model(self):

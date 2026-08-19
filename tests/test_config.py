@@ -1,14 +1,13 @@
 from __future__ import annotations
 
 import json
+import os
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
-from argo.config import (
-    default_config_path,
-    load_config,
-)
+from argo.config import default_config_path, load_config
 
 
 class ConfigTests(unittest.TestCase):
@@ -24,13 +23,12 @@ class ConfigTests(unittest.TestCase):
                             }
                         },
                         "music": {
-                            "library_root": "~/Музыка",
+                            "library_root": "~/Music",
                         },
                     }
                 ),
                 encoding="utf-8",
             )
-
             config = load_config(path)
 
         self.assertFalse(config["voice"]["models"]["ru"].startswith("~"))
@@ -44,7 +42,7 @@ class ConfigTests(unittest.TestCase):
                     {
                         "voice": {
                             "models": {
-                                "en": "$HOME/models/en",
+                                "en": "$IR_TEST_ROOT/models/en",
                             }
                         }
                     }
@@ -52,11 +50,18 @@ class ConfigTests(unittest.TestCase):
                 encoding="utf-8",
             )
 
-            config = load_config(path)
+            with patch.dict(
+                os.environ,
+                {
+                    "IR_TEST_ROOT": temp_dir,
+                },
+                clear=False,
+            ):
+                config = load_config(path)
 
-        self.assertNotIn(
-            "$HOME",
-            config["voice"]["models"]["en"],
+        self.assertEqual(
+            Path(config["voice"]["models"]["en"]),
+            Path(temp_dir) / "models" / "en",
         )
 
     def test_non_object_config_is_rejected(self):
@@ -76,10 +81,13 @@ class ConfigTests(unittest.TestCase):
             environ={},
         )
 
-        self.assertTrue(
-            str(path).endswith(
-                "/.config/argo/config.json",
-            )
+        self.assertEqual(
+            path.parts[-3:],
+            (
+                ".config",
+                "argo",
+                "config.json",
+            ),
         )
 
     def test_windows_default_uses_appdata(self):
@@ -104,8 +112,7 @@ class ConfigTests(unittest.TestCase):
             },
         )
 
-        self.assertTrue(
-            str(path).endswith(
-                "/custom-ir.json",
-            )
+        self.assertEqual(
+            path.name,
+            "custom-ir.json",
         )

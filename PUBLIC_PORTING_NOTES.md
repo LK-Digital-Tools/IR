@@ -45,3 +45,4 @@ Not in scope yet:
 - Added separate Linux and Windows config examples; config values now expand environment variables as well as `~`, allowing Windows paths such as `%LOCALAPPDATA%/IR/...` to be configured without hard-coding a username.
 - Added Windows PowerShell installer and reversible per-user logon autostart. The scheduled task launches IR through the project venv's `pythonw.exe`, so no persistent console window is required.
 - Added `windows/verify_windows.ps1` for first-host validation: full unit suite, WinRT, pycaw, Vosk/sounddevice imports, config load, Windows action surface, and visible audio devices.
+- Windows live-host portability repairs: path assertions are separator-neutral, Linux file-deletion tests are Linux-only, and the Windows extra now includes the PyWinRT Foundation projections required by GSMTC at runtime.
