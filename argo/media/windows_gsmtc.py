@@ -6,6 +6,13 @@ import shutil
 import subprocess
 
 from .base import Result
+from .windows_appcommand import (
+    APPCOMMAND_MEDIA_NEXTTRACK,
+    APPCOMMAND_MEDIA_PAUSE,
+    APPCOMMAND_MEDIA_PLAY,
+    APPCOMMAND_MEDIA_PREVIOUSTRACK,
+    send_appcommand,
+)
 
 SUPPORTED_ACTIONS = frozenset(
     {
@@ -83,36 +90,73 @@ class WindowsMediaController:
             success_message,
         )
 
-    def play(self) -> Result:
-        return self._run(
-            self._command(
-                "try_play_async",
-                "play: ready",
+    def _send_appcommand(
+        self,
+        command: int,
+        success_message: str,
+    ) -> Result:
+        return send_appcommand(
+            self._target_process_name(),
+            command,
+            success_message,
+        )
+
+    def _transport_command(
+        self,
+        method_name: str,
+        success_message: str,
+        appcommand: int,
+    ) -> Result:
+        try:
+            return asyncio.run(
+                self._command(
+                    method_name,
+                    success_message,
+                )
             )
+        except RuntimeError as exc:
+            if str(exc) == "No active Windows media session.":
+                return self._send_appcommand(
+                    appcommand,
+                    success_message,
+                )
+
+            return Result(
+                False,
+                f"Windows media error: {exc}",
+            )
+        except Exception as exc:
+            return Result(
+                False,
+                f"Windows media error: {exc}",
+            )
+
+    def play(self) -> Result:
+        return self._transport_command(
+            "try_play_async",
+            "play: ready",
+            APPCOMMAND_MEDIA_PLAY,
         )
 
     def pause(self) -> Result:
-        return self._run(
-            self._command(
-                "try_pause_async",
-                "pause: ready",
-            )
+        return self._transport_command(
+            "try_pause_async",
+            "pause: ready",
+            APPCOMMAND_MEDIA_PAUSE,
         )
 
     def next(self) -> Result:
-        return self._run(
-            self._command(
-                "try_skip_next_async",
-                "next: ready",
-            )
+        return self._transport_command(
+            "try_skip_next_async",
+            "next: ready",
+            APPCOMMAND_MEDIA_NEXTTRACK,
         )
 
     def previous(self) -> Result:
-        return self._run(
-            self._command(
-                "try_skip_previous_async",
-                "previous: ready",
-            )
+        return self._transport_command(
+            "try_skip_previous_async",
+            "previous: ready",
+            APPCOMMAND_MEDIA_PREVIOUSTRACK,
         )
 
     def stop(self) -> Result:
