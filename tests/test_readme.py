@@ -53,8 +53,8 @@ class ReadmeTests(unittest.TestCase):
             self.readme,
         )
 
-    def test_readme_marks_windows_live_validation_pending(self):
+    def test_readme_marks_windows_live_validation_complete(self):
         self.assertIn(
-            "live validation on a Windows host is still required",
+            "Windows live validation is complete for the current 8-command voice surface.",
             self.readme,
         )

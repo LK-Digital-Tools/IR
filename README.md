@@ -5,7 +5,7 @@ IR is a local, offline voice controller for desktop music playback.
 Current target platforms:
 
 - Linux: full 11-command surface through MPRIS/playerctl
-- Windows: 10-command surface through GSMTC + Core Audio
+- Windows: validated 8-command voice surface through GSMTC, targeted WM_APPCOMMAND fallback, and Core Audio
 - Languages: Russian and English
 - Speech recognition: local Vosk
 - Cloud services: none
@@ -18,8 +18,8 @@ Russian:
 - `Ир, пауза`
 - `Ир, следующий`
 - `Ир, предыдущий`
-- `Ир, трек`
-- `Ир, повтор`
+- `Ир, трек` — Linux only
+- `Ир, повтор` — Linux only
 - `Ир, тише`
 - `Ир, громче`
 - `Ир, стоп`
@@ -28,17 +28,17 @@ Russian:
 
 English:
 
-- `ir play`
-- `ir pause`
-- `ir next`
-- `ir previous`
-- `ir track`
-- `ir repeat`
-- `ir quieter`
-- `ir louder`
-- `ir stop`
-- `ir music`
-- `ir delete` — Linux only
+- `iris play`
+- `iris pause`
+- `iris next`
+- `iris previous`
+- `iris track` — Linux only
+- `iris repeat` — Linux only
+- `iris quieter`
+- `iris louder`
+- `iris stop`
+- `iris music`
+- `iris delete` — Linux only
 
 Commands are exact and require the wake word.
 
@@ -50,15 +50,15 @@ Commands are exact and require the wake word.
 | pause | yes | yes |
 | next | yes | yes |
 | previous | yes | yes |
-| track/status | yes | yes |
-| repeat current | yes | yes |
+| track/status | yes | no |
+| repeat current | yes | no |
 | quieter | yes | yes |
 | louder | yes | yes |
 | stop as resumable pause | yes | yes |
 | open player | yes | yes |
 | delete current local file | yes | no |
 
-Windows deliberately omits `delete_current` until a safe cross-player local-file contract exists.
+Windows voice grammar deliberately omits `status`, `repeat_current`, and `delete_current`. The validated host exposed no active GSMTC session, and Windows file deletion remains unsupported.
 
 ## Linux
 
@@ -171,12 +171,12 @@ python -m ruff format --check argo tests tools
 
 Linux behavior is derived from the stable private IR V5 baseline.
 
-Windows transport commands prefer GSMTC and fall back to targeted `WM_APPCOMMAND` for play/pause/next/previous/stop when no GSMTC session exists. `status` and `repeat` still require an active GSMTC session. Windows `delete_current` remains disabled.
+Windows transport commands prefer GSMTC and fall back to targeted `WM_APPCOMMAND` for play/pause/next/previous/stop when no GSMTC session exists. The stable Windows voice grammar excludes `status`, `repeat`, and `delete`.
 
-Windows implementation is structurally complete for the current 8-command surface, but live validation on a Windows host is still required before the first public release.
+Windows live validation is complete for the current 8-command voice surface.
 
 License: MIT. Copyright (c) 2026 LK Digital Tools.
 
 English wake name: `Iris`.
 
-Validated Windows voice surface: `play`, `pause`, `next`, `previous`, `quieter`, `louder`, `stop`, `music`. `track`, `repeat`, and `delete` are excluded from the Windows grammar on the validated host.
+Validated Windows voice surface: `play`, `pause`, `next`, `previous`, `quieter`, `louder`, `stop`, `music`.
