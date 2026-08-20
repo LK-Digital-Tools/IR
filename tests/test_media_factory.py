@@ -69,10 +69,18 @@ class MediaFactoryTests(unittest.TestCase):
 
         self.assertEqual(
             len(actions),
-            10,
+            8,
         )
         self.assertNotIn(
             "delete_current",
+            actions,
+        )
+        self.assertNotIn(
+            "status",
+            actions,
+        )
+        self.assertNotIn(
+            "repeat_current",
             actions,
         )
 

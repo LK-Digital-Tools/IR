@@ -173,6 +173,10 @@ Linux behavior is derived from the stable private IR V5 baseline.
 
 Windows transport commands prefer GSMTC and fall back to targeted `WM_APPCOMMAND` for play/pause/next/previous/stop when no GSMTC session exists. `status` and `repeat` still require an active GSMTC session. Windows `delete_current` remains disabled.
 
-Windows implementation is structurally complete for the current 10-command surface, but live validation on a Windows host is still required before the first public release.
+Windows implementation is structurally complete for the current 8-command surface, but live validation on a Windows host is still required before the first public release.
 
 License: MIT. Copyright (c) 2026 LK Digital Tools.
+
+English wake name: `Iris`.
+
+Validated Windows voice surface: `play`, `pause`, `next`, `previous`, `quieter`, `louder`, `stop`, `music`. `track`, `repeat`, and `delete` are excluded from the Windows grammar on the validated host.

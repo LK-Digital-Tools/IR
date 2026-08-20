@@ -20,8 +20,6 @@ SUPPORTED_ACTIONS = frozenset(
         "pause",
         "next",
         "previous",
-        "status",
-        "repeat_current",
         "quieter",
         "louder",
         "stop",

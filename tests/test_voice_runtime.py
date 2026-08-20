@@ -69,7 +69,7 @@ class VoiceRuntimeTests(unittest.TestCase):
 
         self.assertEqual(
             command_from_vosk_text(
-                "  IR   PLAY  ",
+                "  IRIS   PLAY  ",
                 EN_COMMAND_PHRASES,
             ),
             "play",
@@ -238,9 +238,17 @@ class PlatformCommandSurfaceTests(unittest.TestCase):
 
         self.assertEqual(
             len(phrases),
-            10,
+            8,
         )
         self.assertNotIn(
-            "ir delete",
+            "iris delete",
+            phrases,
+        )
+        self.assertNotIn(
+            "iris track",
+            phrases,
+        )
+        self.assertNotIn(
+            "iris repeat",
             phrases,
         )

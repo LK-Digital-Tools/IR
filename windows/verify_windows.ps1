@@ -63,7 +63,7 @@ if ($LASTEXITCODE -ne 0) {
     throw "Config load failed."
 }
 
-& $Python -c "from argo.media import get_supported_actions; actions = get_supported_actions(platform='win32'); assert len(actions) == 10; assert 'delete_current' not in actions; print('WINDOWS ACTION SURFACE: PASS'); print('ACTIONS:', ' '.join(sorted(actions)))"
+& $Python -c "from argo.media import get_supported_actions; actions = get_supported_actions(platform='win32'); assert len(actions) == 8; assert 'delete_current' not in actions; assert 'status' not in actions; assert 'repeat_current' not in actions; print('WINDOWS ACTION SURFACE: PASS'); print('ACTIONS:', ' '.join(sorted(actions)))"
 if ($LASTEXITCODE -ne 0) {
     throw "Windows action surface verification failed."
 }

@@ -18,9 +18,9 @@ class LanguagePackTests(unittest.TestCase):
         self.assertEqual(len(EN_COMMAND_PHRASES), 11)
 
     def test_english_pack_maps_expected_commands(self):
-        self.assertEqual(EN_COMMAND_PHRASES["ir play"], "play")
-        self.assertEqual(EN_COMMAND_PHRASES["ir music"], "open_player")
-        self.assertEqual(EN_COMMAND_PHRASES["ir delete"], "delete_current")
+        self.assertEqual(EN_COMMAND_PHRASES["iris play"], "play")
+        self.assertEqual(EN_COMMAND_PHRASES["iris music"], "open_player")
+        self.assertEqual(EN_COMMAND_PHRASES["iris delete"], "delete_current")
 
 
 class LanguageSelectionTests(unittest.TestCase):
